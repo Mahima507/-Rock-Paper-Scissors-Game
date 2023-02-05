@@ -1,0 +1,220 @@
+code  Rock Paper Scissors games project to made by using Javascript,css and html 
+ 
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Rock Paper Scissors </title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<h1> Rock Paper Scissors </h1>
+
+	<div id="start">
+		<h2> Let's Play </h2>
+		<button id="play-button" type="button">Play</button>
+	</div>
+
+	<div id="game">
+		<div class="choices">
+			<div class="choice" id="rock"><img src="rock.png" alt="Rock" /></div>
+			<div class="choice" id="paper"><img src="paper.png" alt="Paper" /></div>
+			<div class="choice" id="scissors"><img src="scissors.png" alt="Scissors" /></div>
+		</div>
+	</div>
+
+	<div id="end">
+		<p id="text"></p>
+		<button id="restart-button" type="button">Restart</button>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+CSS FILE
+
+
+
+
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+body {
+	background: #e9e9e9;
+	font-family: sans-serif;
+	text-align: center;
+	padding: 20px;
+}
+
+h1 {
+	margin-top: 0;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	font-size: 24px;
+}
+
+#start {
+	margin-top: 40px;
+}
+
+h2 {
+	font-size: 18px;
+}
+
+#play-button {
+	background: #0099ff;
+	border: 0;
+	border-radius: 10px;
+	padding: 10px 40px;
+	font-size: 18px;
+	color: #f1f1f1;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+#play-button:hover {
+	background: #0088e7;
+}
+
+#game {
+	display: none;
+	margin-top: 40px;
+}
+
+.choices {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+	width: 200px;
+	margin: 0 auto;
+}
+
+.choice img {
+	width: 80px;
+	cursor: pointer;
+}
+
+#end {
+	display: none;
+	margin-top: 40px;
+}
+
+#text {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+#restart-button {
+	background: #0099ff;
+	border: 0;
+	border-radius: 10px;
+	padding: 10px 40px;
+	font-size: 18px;
+	color: #f1f1f1;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+#restart-button:hover {
+	background: #0088e7;
+}
+
+
+
+
+
+JAVASCRIPT FILE
+
+
+
+const playButton = document.getElementById('play-button');
+const restartButton = document.getElementById('restart-button');
+const rock = document.getElementById('rock');
+const paper = document.getElementById('paper');
+const scissors = document.getElementById('scissors');
+const startScreen = document.getElementById('start');
+const gameScreen = document.getElementById('game');
+const endScreen = document.getElementById('end');
+const text = document.getElementById('text');
+
+playButton.addEventListener('click', playGame);
+restartButton.addEventListener('click', playGame);
+rock.addEventListener('click', playRound);
+paper.addEventListener('click', playRound);
+scissors.addEventListener('click', playRound);
+
+let playerSelection;
+let computerSelection;
+let playerScore = 0;
+let computerScore = 0;
+
+function playGame() {
+	startScreen.style.display = 'none';
+	gameScreen.style.display = 'block';
+	endScreen.style.display = 'none';
+}
+
+function playRound(e) {
+	playerSelection = e.target.id;
+	computerSelection = computerPlay();
+	playRound();
+}
+
+function playRound() {
+	switch (playerSelection + computerSelection) {
+		case 'rockscissors':
+		case 'paperrock':
+		case 'scissorspaper':
+			win();
+			break;
+		case 'rockpaper':
+		case 'paperscissors':
+		case 'scissorsrock':
+			lose();
+			break;
+		case 'rockrock':
+		case 'paperpaper':
+		case 'scissorsscissors':
+			tie();
+			break;
+	}
+	endGame();
+}
+
+function computerPlay() {
+	let choices = ['rock', 'paper', 'scissors'];
+	let randomChoice = choices[Math.floor(Math.random() * choices.length)];
+	return randomChoice;
+}
+
+function win() {
+	playerScore++;
+	text.innerHTML = `You win! <br>You: ${playerScore} Computer: ${computerScore}`;
+}
+
+function lose() {
+	computerScore++;
+	text.innerHTML = `You lose! <br>You: ${playerScore} Computer: ${computerScore}`;
+}
+
+function tie() {
+	text.innerHTML = `It's a tie! <br>You: ${playerScore} Computer: ${computerScore}`;
+}
+
+function endGame() {
+	if (playerScore == 5 || computerScore == 5) {
+		gameScreen.style.display = 'none';
+		endScreen.style.display = 'block';
+		playerScore == 5
+			? (text.innerHTML = 'You win!')
+			: (text.innerHTML = 'You lose!');
+	}
+}
